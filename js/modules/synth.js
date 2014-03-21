@@ -8,6 +8,7 @@ define(
 		var oscillators = {};
 		var gainNode = context.createGainNode();
 		var onNoteHandlers = [];
+		var onNoteEndHandlers = [];
 
 		function playSound(e){
 			var key = getKey(e.which);
@@ -21,7 +22,7 @@ define(
 			}
 
 			var oscillator = context.createOscillator();
-			oscillator.type = 'sine';
+			oscillator.type = 'triangle';
 			oscillator.frequency.value = frequency;
 			oscillator.connect(gainNode);
 			oscillators[frequency.toString()] = oscillator;
@@ -45,8 +46,8 @@ define(
 			var oscillator = oscillators[frequency.toString()];
 			oscillator && oscillator.stop();
 			delete oscillators[frequency.toString()];
-			onNoteHandlers.forEach(function(handler){
-				handler("", null);
+			onNoteEndHandlers.forEach(function(handler){
+				handler();
 			});
 		}
 
@@ -83,12 +84,19 @@ define(
 			onNoteHandlers.push(handler);
 		}
 
+		function onNoteEnd(handler){
+			onNoteEndHandlers.push(handler);
+		}
+
 		return Object.create(null, {
 			"init" : {
 				value : init
 			},
 			"onNote" : {
 				value : onNote
+			},
+			"onNoteEnd" : {
+				value : onNoteEnd
 			},
 			"connect" : {
 				value : function(to){

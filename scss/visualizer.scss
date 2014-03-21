@@ -12,8 +12,6 @@
 		height:100%;
 		width:1px;
 		background-color:#666;
-		//@include prefixer(justify-content, space-around, webkit moz spec);
-		//@include prefixer(align-items, flex-end, webkit moz spec);
 		@include transition(height 50ms linear);
 	}
 

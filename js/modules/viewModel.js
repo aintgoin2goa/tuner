@@ -1,8 +1,13 @@
 define([], function ViewModelModule(){
 
-	return {
+	var ViewModel = {
 		currentNote : "",
-		currentFrequency : 0
+		currentFrequency : 0,
+		frequencyGuesses : [],
+		guessAverage : 0
 	}
+
+
+	return ViewModel;
 
 });
