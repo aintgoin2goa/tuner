@@ -1,54 +1,28 @@
 require(
 	[
 		"audioContext",
-		"notes"
+		"bind",
+		"viewModel",
+		"synth",
+		"analyser",
+		"visualizer"
 	],
-	function(context, notes){
+	function(context,  bind, ViewModel, synth, analyser, visualizer){
 
-		var oscillator;
-		var gainNode = context.createGainNode();
-		gainNode.connect(context.destination);
+		synth.onNote(function(key, frequency){
+			ViewModel.currentlyPlaying = key;
+			ViewModel.currentFrequency = frequency;
+		});
 
-		var playing;
-		
-		function playSound(e){
-			var key = getKey(e.which);
-			if(!key){
-				return;
-			}
-			var frequency = notes.getFrequency(key, 4);
-			if(playing === frequency){
-				return;
-			}
-			
-			console.log(key, frequency);
-			oscillator = context.createOscillator();
-			oscillator.type = 'triangle';
-			oscillator.frequency.value = frequency;
-			oscillator.connect(gainNode);
-			oscillator.start(0);
-			playing = frequency;
-		}
+		bind(ViewModel, "currentNote").to(document.getElementById("currentKey"), "innerText");
+		bind(ViewModel, "currentFrequency").to(document.getElementById("currentFrequency"), "innerText");
 
-		function stopSound(e){
-			oscillator.stop();
-			playing = null;
-		}
 
-		function getKey(code){
-			switch(code){
-				case 90 : return "C";
-				case 88 : return "D";
-				case 67 : return "E";
-				case 86 : return "F";
-				case 66 : return "G";
-				case 78 : return "A";
-				case 77 : return "B";
-				default : return false;
-			}
-		}
+		synth.connect(analyser.input);
+		analyser.connect(context.destination);
 
-		document.body.addEventListener("keydown", playSound);
-		document.body.addEventListener("keyup", stopSound);
+		synth.init();
+		analyser.init();
+		visualizer.init(analyser.size / 2);
 	}
 );

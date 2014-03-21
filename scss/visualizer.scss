@@ -1,0 +1,20 @@
+#visualizer{
+	position: fixed;
+	bottom:0;
+	left:0;
+	right:0;
+	height:35%;
+	@include background-image(linear-gradient(white 0%, #EEEEEE 70%, #999999 100%));
+	@include box(inline-axis, justify);
+
+	.node{
+		display: block;
+		height:100%;
+		width:1px;
+		background-color:#666;
+		//@include prefixer(justify-content, space-around, webkit moz spec);
+		//@include prefixer(align-items, flex-end, webkit moz spec);
+		@include transition(height 50ms linear);
+	}
+
+}

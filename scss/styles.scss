@@ -1,0 +1,9 @@
+@import "bourbon/bourbon";
+@import 'reset';
+
+p{
+	margin:1em 0;
+	padding:0 1em;
+}
+
+@import 'visualizer';
