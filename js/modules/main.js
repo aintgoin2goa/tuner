@@ -8,42 +8,31 @@ require(
 		"visualizer",
 		"toneGuesser"
 	],
-	function(context,  bind, ViewModel, synth, analyser, visualizer, guesser){
+    function (context, bind, ViewModel, synth, analyser, visualizer) {
+        var guessing = false;
 
-		var guessing = false;
+		function updateSynthType(){
+			var select = document.getElementById("type");
+			synth.type = select.options[select.selectedIndex].value;
+		}
+
+		updateSynthType();
+		document.getElementById("type").addEventListener("change", updateSynthType);
 
 		synth.onNote(function(key, frequency){
 			ViewModel.currentNote = key;
 			ViewModel.currentFrequency = frequency;
 			guessing = true;
-			requestAnimationFrame(makeGuess);
 		});
 
 		synth.onNoteEnd(function(){
 			guessing = false;
 		});
 
-		function makeGuess(){
-			var guesses = guesser.guess();
-			ViewModel.frequencyGuesses = guesses;
-			ViewModel.guessAverage = (function(){
-				var total = guesses.reduce(function(previous, current){
-					return previous + current;
-				}, 0);
-				return total / guesses.length;
-			}());
-			guessing && requestAnimationFrame(makeGuess);
-		}
-
-
 
 		bind(ViewModel, "currentNote").to(document.getElementById("currentKey"), "innerText");
 		bind(ViewModel, "currentFrequency").to(document.getElementById("currentFrequency"), "innerText");
-		bind(ViewModel, "frequencyGuesses").to(document.getElementById("frequencyGuesses"), "innerText").using(function(val){
-			return val.join(", ");
-		});
-		bind(ViewModel, "guessAverage").to(document.getElementById("guessAverage"), "innerText");
-
+		bind(ViewModel, "fundamentalFrequency").to(document.getElementById("fundamentalFrequency"), "innerText");
 
 		synth.connect(analyser.input);
 		analyser.connect(context.destination);

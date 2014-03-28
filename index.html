@@ -9,11 +9,18 @@
 	<script data-main="js/modules/main" src="js/lib/require.js"></script>
 </head>
 <body>
+	<p>
+		<label for="type">Type</label>
+		<select id="type">
+			<option value="sine">sine</option>
+			<option value="square">square</option>
+			<option value="sawtooth">sawtooth</option>
+			<option value="triangle">triangle</option>
+		</select>
 
 	<p><b>Current Frequency: </b><span id="currentFrequency"></span></p>
  	<p><b>Current Key: </b><span id="currentKey"></span></p>
-  	<p><b>Frequency Guesses: </b><span id="frequencyGuesses"></span></p>
-  	<p><b>Guess Average: </b><span id="guessAverage"></span></p>
+  	<p><b>Frequency Guess: </b><span id="frequencyGuess"></span></p>
  
  <div id="visualizer"></div>
 

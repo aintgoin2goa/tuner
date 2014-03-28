@@ -2,9 +2,10 @@ define(
 	[
 		"audioContext",
 		"notes",
-		"analyser"
+		"analyser",
+		"hps"
 	],
-	function ToneGuesserModuler(context, notes, analyser){
+	function ToneGuesserModuler(context, notes, analyser, hps){
 
 		function guess(){
 			var data = analyser.data;

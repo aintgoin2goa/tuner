@@ -9,6 +9,7 @@ define(
 		var gainNode = context.createGainNode();
 		var onNoteHandlers = [];
 		var onNoteEndHandlers = [];
+		var oscilatorType = "triangle";
 
 		function playSound(e){
 			var key = getKey(e.which);
@@ -22,7 +23,7 @@ define(
 			}
 
 			var oscillator = context.createOscillator();
-			oscillator.type = 'triangle';
+			oscillator.type = oscilatorType;
 			oscillator.frequency.value = frequency;
 			oscillator.connect(gainNode);
 			oscillators[frequency.toString()] = oscillator;
@@ -101,6 +102,14 @@ define(
 			"connect" : {
 				value : function(to){
 					gainNode.connect(to);
+				}
+			},
+			"type" : {
+				set : function(val){
+					oscilatorType = val;
+				},
+				get : function(){
+					return oscilatorType;
 				}
 			}
 		});

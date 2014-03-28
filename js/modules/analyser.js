@@ -5,12 +5,15 @@ define(
 	],
 	function AnalyserModule(context, synth){
 
+        var filter = context.createBiquadFilter();
+        filter.type = "lowpass";
 		var analyser = context.createAnalyser();
 		analyser.fftsize = 512;
 		var size = analyser.frequencyBinCount;
 		var onUpdateHandlers = [];
 		var active = false;
 		var currentData = new Uint8Array(size);
+        filter.connect(analyser);
 
 		function getFrequency(){
 			analyser.getByteFrequencyData(currentData);
@@ -25,7 +28,7 @@ define(
 		return Object.create(null, {
 			"input" : {
 				get : function(){
-					return analyser;
+					return filter;
 				}
 			},
 			"connect"  : {
@@ -50,7 +53,15 @@ define(
 				get : function(){
 					return analyser.frequencyBinCount;
 				}
-			}
+			},
+            "filterType" : {
+                get : function(){
+                    return filter.type;
+                },
+                set : function(val){
+                    filter.type = val;
+                }
+            }
 		});
 
 	}
